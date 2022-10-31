@@ -3,13 +3,13 @@
 
 float graph_sin(float A, float B, float C, float D, float x, sf::Vector2f central_point)
 {
-    float sin_value = A * 50 * -sin(0.05 * B * (x - central_point.x - C ) ) + central_point.y - D;
+    float sin_value = (A * 50) * -sin(0.05 * B * (x - central_point.x - (C * 50) ) ) + central_point.y - (D * 50);
     return sin_value;
 }
 
 float graph_cos(float A, float B, float C, float D, float x, sf::Vector2f central_point)
 {
-    float cos_value = A * 50 * -cos(0.05 * B * (x - central_point.x - C ) ) + central_point.y - D;
+    float cos_value = (A * 50) * -cos(0.05 * B * (x - central_point.x - (C * 50) ) ) + central_point.y - (D * 50);
     return cos_value;
 }
 
@@ -31,7 +31,7 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(displayWidth, displayHeight), "graph");
     window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(10);
+    window.setFramerateLimit(5);
 
     sf::Vertex VerticalLine[] =
     {
@@ -45,10 +45,19 @@ int main()
         sf::Vertex(sf::Vector2f(float(displayWidth), central_point.y))
     };
 
-    VerticalLine[0].color = sf::Color(200, 200, 200);
-    VerticalLine[1].color = sf::Color(200, 200, 200);
-    HorizontalLine[0].color = sf::Color(200, 200, 200);
-    HorizontalLine[1].color = sf::Color(200, 200, 200);
+    VerticalLine[0].color = sf::Color(250, 250, 250);
+    VerticalLine[1].color = sf::Color(250, 250, 250);
+    HorizontalLine[0].color = sf::Color(250, 250, 250);
+    HorizontalLine[1].color = sf::Color(250, 250, 250);
+
+    sf::Vertex net[2];
+    net[0].color = sf::Color(30, 30, 30);
+    net[1].color = sf::Color(30, 30, 30);
+
+    sf::Vertex net2[2];
+    net2[0].color = sf::Color(60, 60, 60);
+    net2[1].color = sf::Color(60, 60, 60);
+
 
     sf::VertexArray graph(sf::LineStrip, 2);
 
@@ -76,6 +85,63 @@ int main()
         }
 
         window.clear();
+
+        for (int i = int(central_point.y) + 50; i < displayHeight; i += 50)                         //drawing net
+        {
+            window.draw(net, 2, sf::Lines);
+            net[0].position = sf::Vector2f(0, i);
+            net[1].position = sf::Vector2f(float(displayWidth), i);
+        }
+
+        for (int i = int(central_point.y) - 50; i < displayHeight; i -= 50)
+        {
+            window.draw(net, 2, sf::Lines);
+            net[0].position = sf::Vector2f(0, i);
+            net[1].position = sf::Vector2f(float(displayWidth), i);
+        }
+
+        for (int i = int(central_point.x) + 50; i < displayWidth; i += 50)
+        {
+            window.draw(net, 2, sf::Lines);
+            net[0].position = sf::Vector2f(i, 0);
+            net[1].position = sf::Vector2f(i, float(displayHeight));
+        }
+
+        for (int i = int(central_point.x) - 50; i < displayWidth; i -= 50)
+        {
+            window.draw(net, 2, sf::Lines);
+            net[0].position = sf::Vector2f(i, 0);
+            net[1].position = sf::Vector2f(i, float(displayHeight));
+        }
+
+        for (int i = int(central_point.x) + 200; i < displayWidth; i += 200)                          //drawing net2
+        {
+            window.draw(net2, 2, sf::Lines);
+            net2[0].position = sf::Vector2f(i, 0);
+            net2[1].position = sf::Vector2f(i, float(displayHeight));
+        }
+
+        for (int i = int(central_point.x) - 200; i < displayWidth; i -= 200)
+        {
+            window.draw(net2, 2, sf::Lines);
+            net2[0].position = sf::Vector2f(i, 0);
+            net2[1].position = sf::Vector2f(i, float(displayHeight));
+        }
+
+        for (int i = int(central_point.y) + 200; i < displayHeight; i += 200)
+        {
+            window.draw(net2, 2, sf::Lines);
+            net2[0].position = sf::Vector2f(0, i);
+            net2[1].position = sf::Vector2f(float(displayWidth), i);
+        }
+
+        for (int i = int(central_point.y) - 200; i < displayHeight; i -= 200)
+        {
+            window.draw(net2, 2, sf::Lines);
+            net2[0].position = sf::Vector2f(0, i);
+            net2[1].position = sf::Vector2f(float(displayWidth), i);
+        }
+
         window.draw(VerticalLine, 2, sf::Lines);
         window.draw(HorizontalLine, 2, sf::Lines);
         window.draw(graph);
